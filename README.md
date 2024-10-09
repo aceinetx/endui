@@ -4,6 +4,7 @@ A sequel to TWn, completely rewritten
 - TWn had many bugs and crashes
 - I wanted to rewrite it completely with C (maybe c3) for more speed
 - I wanted to use CMake as a build system to make testing and cross-platforming easier
+- TWn had really bad codebase, like, the entire drawing was in a main.c, endui will solve that
 <br>
 EndUI will be tested on as many platforms as possible to avoid all bugs
 <br>
