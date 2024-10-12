@@ -2,7 +2,7 @@
 A sequel to TWn, completely rewritten
 ## Why rewrite?
 - TWn had many bugs and crashes
-- I wanted to rewrite it completely with C for more speed
+- I wanted to rewrite it completely with C (maybe c3) for more speed
 - I wanted to use CMake as a build system to make testing and cross-platforming easier
 - TWn had really bad codebase, like, the entire drawing was in a main.c, endui will solve that
 ## Pros/Cons of using EndUI
