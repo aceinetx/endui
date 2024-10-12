@@ -1,0 +1,20 @@
+#ifdef ENDUI_IMPL
+#include <app_exec_result.h>
+#include <dlfcn.h>
+#include <drawing.h>
+#include <endapi.h>
+#include <ezheap.h>
+#include <keyboard.h>
+#include <locale.h>
+#include <mouse.h>
+#include <ncurses.h>
+#include <pthread.h>
+#include <segcatch.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
+#include <vec.h>
+#include <window.h>
+#endif
