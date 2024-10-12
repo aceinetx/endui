@@ -7,6 +7,7 @@
 
 // vars/typedef's
 vec_void_t handles;
+vec_void_t app_handles;
 EWH *drag_window = NULL;
 
 endui_mouse mouse = {0};
@@ -19,25 +20,25 @@ typedef void *(*endapi_update_symbols)(api_symbols *);
 // functions
 void ewh_add(EWH *w) { vec_push(&handles, w); }
 
-app_exec_result runApp(const char *name) {
-  app_exec_result res;
-  res.handle = NULL;
-  res.success = true;
+app_exec_result *runApp(const char *name) {
+  app_exec_result *res = malloc(sizeof(void *) + sizeof(void *) + sizeof(bool));
+  res->handle = NULL;
+  res->success = true;
 
   endui_main main_f;
   endapi_update_symbols update_symbols;
 
-  res.handle = dlopen(name, RTLD_NOW);
+  res->handle = dlopen(name, RTLD_NOW);
 
-  if (res.handle) {
-    main_f = dlsym(res.handle, "main");
-    if ((res._dlerror = dlerror()) != NULL) {
-      res.success = false;
+  if (res->handle) {
+    main_f = dlsym(res->handle, "main");
+    if ((res->_dlerror = dlerror()) != NULL) {
+      res->success = false;
       return res;
     }
-    update_symbols = dlsym(res.handle, "__endui_update_symbols");
-    if ((res._dlerror = dlerror()) != NULL) {
-      res.success = false;
+    update_symbols = dlsym(res->handle, "__endui_update_symbols");
+    if ((res->_dlerror = dlerror()) != NULL) {
+      res->success = false;
       return res;
     }
 
@@ -45,8 +46,11 @@ app_exec_result runApp(const char *name) {
     pthread_t dlth;
     pthread_create(&dlth, NULL, main_f, &symbols);
   } else {
-    res.success = false;
-    res.handle = NULL;
+    res->success = false;
+    res->handle = NULL;
+  }
+  if (res->success && res->handle) {
+    vec_push(&app_handles, &res);
   }
   return res;
 }
@@ -54,6 +58,7 @@ app_exec_result runApp(const char *name) {
 void endui_init() {
   initscr();
   vec_init(&handles);
+  vec_init(&app_handles);
 
   ezheap_init();
 
@@ -83,6 +88,7 @@ void endui_fini() {
     free(handle);
   }
   vec_deinit(&handles);
+  vec_deinit(&app_handles);
   ezheap_destruct();
 }
 
@@ -93,7 +99,7 @@ int main() {
 
   segcatch_init((fini_t)endui_fini);
 
-  app_exec_result res = runApp("./libendbar.so");
+  app_exec_result *res = runApp("./libendbar.so");
 
   // ---------
 
@@ -115,6 +121,15 @@ int main() {
 
   endui_fini();
 
-  if (res.handle) dlclose(res.handle);
+  // close apps
+  for (int i = 0; i < app_handles.length; i++) {
+    app_exec_result *app = (app_exec_result *)app_handles.data[i];
+    if (app != NULL) {
+      if (app->handle != NULL) {
+        dlclose(app->handle);
+      }
+    }
+  }
+
   // -----------
 }
