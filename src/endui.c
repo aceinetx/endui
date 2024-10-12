@@ -16,6 +16,7 @@ api_symbols symbols;
 
 typedef void *(*endui_main)();
 typedef void *(*endapi_update_symbols)(api_symbols *);
+typedef void *(*endapi_fini)();
 
 // functions
 void ewh_add(EWH *w) { vec_push(&handles, w); }
@@ -126,6 +127,10 @@ int main() {
     app_exec_result *app = (app_exec_result *)app_handles.data[i];
     if (app != NULL) {
       if (app->handle != NULL) {
+        endapi_fini fini_f = dlsym(app->handle, "endui_fini");
+        if (dlerror() == NULL) {
+          fini_f();
+        }
         dlclose(app->handle);
       }
     }

@@ -27,3 +27,5 @@ void main(void *sym) {
   main_menu->hidden = true;
   ewh_add(main_menu);
 }
+
+void endui_fini() { return; }
