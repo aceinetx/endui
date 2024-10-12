@@ -8,7 +8,7 @@ A sequel to TWn, completely rewritten
 ## Pros/Cons of using EndUI
 ### Pros
 - The most lightweight window manager
-- Supports TTY only environment 
+- Supports TTY only environment (like a fresh archlinux install)
 - Easy to develop apps
 ### Cons
 - Doesn't support GTK/Qt (or others) gui frameworks
