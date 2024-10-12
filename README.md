@@ -14,5 +14,3 @@ A sequel to TWn, completely rewritten
 - Doesn't support GTK/Qt (or others) gui frameworks
 <br>
 EndUI will be tested on as many platforms as possible to avoid all bugs
-<br>
-sssh... wait until I push the source, something big is coming up
