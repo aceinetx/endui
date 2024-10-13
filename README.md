@@ -12,5 +12,7 @@ A sequel to TWn, completely rewritten
 - Easy to develop apps
 ### Cons
 - Doesn't support GTK/Qt (or others) gui frameworks
-<br>
+## API
+- [API documentation](APIDOCS.md)
+
 EndUI will be tested on as many platforms as possible to avoid all bugs
