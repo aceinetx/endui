@@ -100,7 +100,8 @@ int main() {
 
   segcatch_init((fini_t)endui_fini);
 
-  app_exec_result *res = runApp("./libendbar.so");
+  runApp("./libendbar.so");
+  runApp("./libsettings.so");
 
   // ---------
 
