@@ -1,6 +1,9 @@
 #include <endapi.h>
 #include <window.h>
 
+typedef struct {
+} settings;
+
 bool callback(struct EWH* sender, void* arg) {
   strcpy(sender->title, "Clicked");
   sender->width = 9;  // make the text in the center
