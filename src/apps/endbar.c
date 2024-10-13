@@ -11,7 +11,7 @@ bool toggle_menu(struct EWH *sender, void *arg) {
   return true;
 }
 
-void main(void *sym) {
+void main() {
   bar =
       ewh_new_window(0, getmaxy(endui_scr) - 1, getmaxx(endui_scr), 1, "EndUI");
   bar->flags = EWH_NORESIZE | EWH_NOTITLE;

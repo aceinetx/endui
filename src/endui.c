@@ -45,7 +45,7 @@ app_exec_result *runApp(const char *name) {
 
     update_symbols(&symbols);
     pthread_t dlth;
-    pthread_create(&dlth, NULL, main_f, &symbols);
+    pthread_create(&dlth, NULL, main_f, NULL);
   } else {
     res->success = false;
     res->handle = NULL;
