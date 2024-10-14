@@ -12,7 +12,7 @@ EndUI Supports functions hooking with [libmem](https://github.com/rdbo/libmem)<b
 There is only a few functions you can hook, but the list will extend in the future!
 ```c
 #include <endapi.h>
-#include <libmem/libmem.h>
+#include <hooking.h>
 #include <mouse.h>
 #include <window.h>
 
@@ -27,10 +27,8 @@ void process_keypress_H(int key, endui_mouse* mouse, vec_void_t* handles,
 }
 
 void main(void) {
-  LM_HookCode((lm_address_t)process_keypress, (lm_address_t)process_keypress_H,
-              &process_keypress_TR); /* hook the function
-                                        you may not need to cast to lm_address_t, but it depends on your
-                                        compiler and your compiler options */
+  /* hook the function */
+  endui_hook(process_keypress, process_keypress_H, &process_keypress_TR); 
 }
 
 void endui_fini(){ return; }

@@ -1,7 +1,7 @@
 #include <apps/endbar.h>
 #include <endapi.h>
 #include <endfs.h>
-#include <libmem/libmem.h>
+#include <hooking.h>
 #include <mouse.h>
 #include <window.h>
 
@@ -29,8 +29,7 @@ int settings_main(void) {
   EWH* separatorKeybinds = ewh_new_separator(1, 5, 18, settings_window);
   separatorKeybinds->width = separatorKeybinds->parent->width - 2;
 
-  LM_HookCode((lm_address_t)process_keypress, (lm_address_t)process_keypress_H,
-              &process_keypress_TR);
+  endui_hook(process_keypress, process_keypress_H, &process_keypress_TR);
 
   settings_window->hidden = true;
   ewh_add(settings_window);
