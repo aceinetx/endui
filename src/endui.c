@@ -31,7 +31,8 @@ app_exec_result *runApp(const char *name) {
   endui_main main_f;
   endapi_update_symbols update_symbols;
 
-  res->handle = dlopen(name, RTLD_NOW);
+  res->handle = dlopen(name, RTLD_NOW); /* open the app's main library */
+                                        /* kinda how android does */
 
   if (res->handle) {
     main_f = dlsym(res->handle, "main");
@@ -75,6 +76,7 @@ void endui_init() {
   ezheap_init();
 
   setlocale(LC_ALL, "");
+  /* initalize NCurses */
   start_color();
   use_default_colors();
   curs_set(0);
@@ -82,10 +84,13 @@ void endui_init() {
   nodelay(stdscr, TRUE);
   keypad(stdscr, TRUE);
 
+  /* initalize color so we would able to use all 256 colors */
   for (int i = 0; i < COLORS; i++) {
     init_pair(i + 1, i, -1);
   }
 
+  /* initalize symbols */
+  /* pretty much deprecated, but we need it for variables */
   symbols.endui_scr = stdscr;
 }
 
@@ -108,15 +113,15 @@ int main() {
 
   endui_init();
 
-  segcatch_init((fini_t)endui_fini);
+  segcatch_init((fini_t)endui_fini); /* initalize segmentation fault catching */
 
-  runApp("./libendbar.so");
+  runApp("./libendbar.so"); /* open all default apps */
   runApp("./libsettings.so");
 
   // ---------
 
   while (true) {
-    empty_screen();
+    empty_screen(); /* pretty much the entire rendering */
     draw_windows(&handles, drag_window, &mouse);
 
     refresh();
