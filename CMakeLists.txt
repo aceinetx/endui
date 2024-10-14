@@ -4,6 +4,7 @@ project(endui)
 # setup stuff
 include_directories("include" "include/ezheap")
 link_directories("lib")
+
 find_package(Curses)
 if(NOT Curses_FOUND)
   message(SEND_ERROR "Could not find curses")

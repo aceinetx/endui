@@ -7,7 +7,7 @@
 #define TARGET_FPS 60
 #define FRAME_TIME (1000000 / TARGET_FPS)
 
-// vars/typedef's
+/* vars/typedef's */
 vec_void_t handles;
 vec_void_t app_handles;
 EWH *drag_window = NULL;
@@ -20,12 +20,11 @@ typedef fnptr(void *, endui_main);
 typedef fnptr(void *, endapi_update_symbols, api_symbols *);
 typedef fnptr(void *, endapi_fini);
 
-// functions
+/* function */
 void ewh_add(EWH *w) { vec_push(&handles, w); }
 
 app_exec_result *runApp(const char *name) {
-  app_exec_result *res = malloc(sizeof(void *) + sizeof(void *) + sizeof(bool));
-  res->handle = NULL;
+  app_exec_result *res = malloc(sizeof(*res));
   res->success = true;
 
   endui_main main_f;
@@ -34,38 +33,38 @@ app_exec_result *runApp(const char *name) {
   res->handle = dlopen(name, RTLD_NOW); /* open the app's main library */
                                         /* kinda how android does */
 
-  if (res->handle) {
-    main_f = dlsym(res->handle, "main");
-    if ((res->_dlerror = dlerror()) != NULL) {
-      res->success = false;
-      return res;
-    }
-    update_symbols = dlsym(res->handle, "__endui_update_symbols");
-    if ((res->_dlerror = dlerror()) != NULL) {
-      res->success = false;
-      return res;
-    }
+#define handle_error()                       \
+  if ((res->_dlerror = dlerror()) != NULL) { \
+    res->success = false;                    \
+    return res;                              \
+  }
 
-    ewh_add_t ewh_add_f = dlsym(res->handle, "ewh_add");
-    if ((res->_dlerror = dlerror()) != NULL) {
-      res->success = false;
-      return res;
-    }
-
-    // hook api functions
-    LM_HookCode((lm_address_t)ewh_add_f, (lm_address_t)ewh_add, LM_NULLPTR);
-
-    update_symbols(&symbols);
-    pthread_t dlth;
-    pthread_create(&dlth, NULL, main_f, NULL);
-  } else {
+  if (!res->handle) {
     res->success = false;
     res->handle = NULL;
+    return res;
   }
+
+  main_f = dlsym(res->handle, "main");
+  handle_error();
+  update_symbols = dlsym(res->handle, "__endui_update_symbols");
+  handle_error();
+  ewh_add_t ewh_add_f = dlsym(res->handle, "ewh_add");
+  handle_error();
+
+  /* hook api functions */
+  LM_HookCode((lm_address_t)ewh_add_f, (lm_address_t)ewh_add, LM_NULLPTR);
+
+  /* run main */
+  update_symbols(&symbols);
+  pthread_t dlth;
+  pthread_create(&dlth, NULL, main_f, NULL);
+
   if (res->success && res->handle) {
     vec_push(&app_handles, &res);
   }
   return res;
+#undef handle_error
 }
 
 void endui_init() {
