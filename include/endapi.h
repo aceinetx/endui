@@ -4,8 +4,6 @@
 #include <ncurses.h>
 #include <window.h>
 
-typedef void (*ewh_add_t)(EWH *w);
-
 #ifndef ENDUI_IMPL
 extern WINDOW *endui_scr;
 void ewh_add(EWH *w);
