@@ -115,8 +115,7 @@ int main() {
 
   segcatch_init((fini_t)endui_fini); /* initalize segmentation fault catching */
 
-  runApp("./libendbar.so"); /* open all default apps */
-  runApp("./libsettings.so");
+  runApp("./libeverything.so"); /* open default app */
 
   // ---------
 

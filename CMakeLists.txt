@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 project(endui)
 
 # setup stuff
-include_directories("include" "include/ezheap")
+include_directories("include" "include/ezheap" "include/apps")
 link_directories("lib")
 
 find_package(Curses)
@@ -18,5 +18,4 @@ target_link_libraries("endui" "ncurses" "libmem") # if you don't have a x86_64 m
 target_compile_definitions("endui" PUBLIC NCURSES_WIDECHAR=1)
 
 # compile apps
-add_library("endbar" SHARED "src/apps/endbar.c" "src/endapi.c" "src/window.c")
-add_library("settings" SHARED "src/apps/settings.c" "src/endapi.c" "src/window.c" "src/endfs.c")
+add_library("everything" SHARED "src/apps/everything.c" "src/apps/settings.c" "src/apps/endbar.c" "src/endapi.c" "src/window.c" "src/endfs.c")
