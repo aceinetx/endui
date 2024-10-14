@@ -20,7 +20,7 @@ typedef fnptr(void *, endui_main);
 typedef fnptr(void *, endapi_update_symbols, api_symbols *);
 typedef fnptr(void *, endapi_fini);
 
-/* function */
+/* functions */
 void ewh_add(EWH *w) { vec_push(&handles, w); }
 
 app_exec_result *runApp(const char *name) {
