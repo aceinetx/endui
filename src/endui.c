@@ -19,7 +19,7 @@ api_symbols symbols;
 typedef fnptr(void *, endui_main);
 typedef fnptr(void *, endapi_update_symbols, api_symbols *);
 typedef fnptr(void *, endapi_fini);
-typedef fnptr(void, ewh_add_t, EWH *);
+typedef fnptr(void *, ewh_add_t, EWH *);
 
 /* functions */
 void ewh_add(EWH *w) { vec_push(&handles, w); }
