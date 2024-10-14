@@ -31,13 +31,14 @@ void process_keypress(int key, endui_mouse *mouse, vec_void_t *handles,
                 (mouse->y == window->y) && !(window->flags & EWH_NOMOVE) &&
                 !(window->flags & EWH_NOTITLE)) {
               *drag_window = window;
+              break;
             }
           } else {
             if (*drag_window != NULL) {
               (*drag_window)->x = mouse->x;
               (*drag_window)->y = mouse->y;
               *drag_window = NULL;
-              mouse->y++;
+              break;
             }
           }
         } else {
@@ -52,6 +53,7 @@ void process_keypress(int key, endui_mouse *mouse, vec_void_t *handles,
                 if (window->ewh_callback != NULL) {
                   window->ewh_callback(window, NULL);
                   window->clicked_frames = 50;
+                  break;
                 }
               }
               break;
