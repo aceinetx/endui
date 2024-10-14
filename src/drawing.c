@@ -14,8 +14,9 @@ void empty_screen() {
 }
 
 void draw_windows(vec_void_t *handles, EWH *drag_window, endui_mouse *mouse) {
-  for (int i = 0; i < handles->length; i++) {
-    EWH *window = (EWH *)handles->data[i];
+  /* draw parent windows first */
+  for (int wi = 0; wi < handles->length; wi++) {
+    EWH *window = (EWH *)handles->data[wi];
 
     if (window == NULL) continue;
 
@@ -40,7 +41,18 @@ void draw_windows(vec_void_t *handles, EWH *drag_window, endui_mouse *mouse) {
         }
         mvprintw(text_y, text_x, "%s", window->title);
       }
-    } else {
+    }
+  }
+
+  /* draw child windows after parent one's */
+  for (int wi = 0; wi < handles->length; wi++) {
+    EWH *window = handles->data[wi];
+
+    if (window == NULL) continue;
+    if (window->parent == NULL) continue;
+
+    window->hidden = window->parent->hidden;
+    if (!window->hidden) {
       switch (window->child_class) {
         case EWH_BUTTON:
           int end_y = window->parent->y + window->y + window->height;
@@ -65,9 +77,17 @@ void draw_windows(vec_void_t *handles, EWH *drag_window, endui_mouse *mouse) {
           int text_y = window->y + window->parent->y + (window->height / 2);
           mvprintw(text_y, text_x, "%s", window->title);
           break;
+        case EWH_LABEL:
+          mvprintw(window->parent->y + window->y, window->parent->x + window->x,
+                   "%s", window->title);
+          break;
+        case EWH_SEPARATOR:
+          for (int i = 0; i < window->width; i++) {
+            mvprintw(window->parent->y + window->y,
+                     window->parent->x + window->x + i, "-");
+          }
       }
     }
   }
-
   mvprintw(mouse->y, mouse->x, ".");
 }

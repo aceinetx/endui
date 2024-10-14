@@ -17,9 +17,9 @@ endui_mouse mouse = {0};
 api_symbols symbols;
 
 typedef fnptr(void *, endui_main);
-typedef fnptr(void *, endapi_update_symbols, api_symbols *);
-typedef fnptr(void *, endapi_fini);
-typedef fnptr(void *, ewh_add_t, EWH *);
+typedef fnptr(void, endapi_update_symbols, api_symbols *);
+typedef fnptr(void, endapi_fini);
+typedef fnptr(void, ewh_add_t, EWH *);
 
 /* functions */
 void ewh_add(EWH *w) { vec_push(&handles, w); }
@@ -90,8 +90,9 @@ void endui_init() {
   }
 
   /* initalize symbols */
-  /* pretty much deprecated, but we need it for variables */
+  /* pretty much deprecated */
   symbols.endui_scr = stdscr;
+  symbols.process_keypress = process_keypress;
 }
 
 void endui_fini() {
@@ -100,7 +101,6 @@ void endui_fini() {
   for (int i = 0; i < handles.length; i++) {
     EWH *handle = (EWH *)handles.data[i];
     if (handle->title != NULL) free(handle->title);
-    if (handle->class != NULL) free(handle->class);
     free(handle);
   }
   vec_deinit(&handles);
