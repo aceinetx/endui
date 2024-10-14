@@ -19,12 +19,11 @@ api_symbols symbols;
 typedef fnptr(void *, endui_main);
 typedef fnptr(void, endapi_update_symbols, api_symbols *);
 typedef fnptr(void, endapi_fini);
-typedef fnptr(void, ewh_add_t, EWH *);
 
 /* functions */
 void ewh_add(EWH *w) { vec_push(&handles, w); }
 
-app_exec_result *runApp(const char *name) {
+app_exec_result *run_app(const char *name) {
   app_exec_result *res = malloc(sizeof(*res));
   res->success = true;
 
@@ -50,11 +49,6 @@ app_exec_result *runApp(const char *name) {
   handle_error();
   update_symbols = dlsym(res->handle, "__endui_update_symbols");
   handle_error();
-  ewh_add_t ewh_add_f = dlsym(res->handle, "ewh_add");
-  handle_error();
-
-  /* hook api functions */
-  LM_HookCode((lm_address_t)ewh_add_f, (lm_address_t)ewh_add, LM_NULLPTR);
 
   /* run main */
   update_symbols(&symbols);
@@ -93,6 +87,9 @@ void endui_init() {
   /* pretty much deprecated */
   symbols.endui_scr = stdscr;
   symbols.process_keypress = process_keypress;
+  symbols.run_app = run_app;
+  symbols.ewh_add = ewh_add;
+  symbols.draw_windows = draw_windows;
 }
 
 void endui_fini() {
@@ -115,7 +112,7 @@ int main() {
 
   segcatch_init((fini_t)endui_fini); /* initalize segmentation fault catching */
 
-  runApp("./libeverything.so"); /* open default app */
+  run_app("./libeverything.so"); /* open default app */
 
   // ---------
 
