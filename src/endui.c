@@ -1,6 +1,8 @@
 #define ENDUI_IMPL
 
+#include <fnptr.h>
 #include <includes.h>
+#include <libmem/libmem.h>
 
 #define TARGET_FPS 60
 #define FRAME_TIME (1000000 / TARGET_FPS)
@@ -14,9 +16,9 @@ endui_mouse mouse = {0};
 
 api_symbols symbols;
 
-typedef void *(*endui_main)();
-typedef void *(*endapi_update_symbols)(api_symbols *);
-typedef void *(*endapi_fini)();
+typedef fnptr(void *, endui_main);
+typedef fnptr(void *, endapi_update_symbols, api_symbols *);
+typedef fnptr(void *, endapi_fini);
 
 // functions
 void ewh_add(EWH *w) { vec_push(&handles, w); }
@@ -42,6 +44,15 @@ app_exec_result *runApp(const char *name) {
       res->success = false;
       return res;
     }
+
+    ewh_add_t ewh_add_f = dlsym(res->handle, "ewh_add");
+    if ((res->_dlerror = dlerror()) != NULL) {
+      res->success = false;
+      return res;
+    }
+
+    // hook api functions
+    LM_HookCode((lm_address_t)ewh_add_f, (lm_address_t)ewh_add, LM_NULLPTR);
 
     update_symbols(&symbols);
     pthread_t dlth;
@@ -75,7 +86,6 @@ void endui_init() {
     init_pair(i + 1, i, -1);
   }
 
-  symbols.ewh_add_f = ewh_add;
   symbols.endui_scr = stdscr;
 }
 

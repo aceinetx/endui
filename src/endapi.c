@@ -6,11 +6,18 @@ extern "C" {
 
 #ifndef ENDUI_IMPL
 
-ewh_add_t ewh_add = NULL;
+void junk() { return; }
+
+void ewh_add(EWH *w) {
+  junk();
+  junk();
+  junk();
+  junk();
+}
+
 WINDOW *endui_scr = NULL;
 
 void __endui_update_symbols(api_symbols *symbols) {
-  ewh_add = symbols->ewh_add_f;
   endui_scr = symbols->endui_scr;
 #endif
 }
