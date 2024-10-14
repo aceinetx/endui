@@ -2,8 +2,8 @@
 #include <window.h>
 
 EWH *ewh_new() {
-  EWH *result = (EWH *)malloc(SIZEOF_EWH);
-  memset(result, 0, SIZEOF_EWH);
+  EWH *result = (EWH *)malloc(sizeof(*result));
+  memset(result, 0, sizeof(*result));
   return result;
 }
 

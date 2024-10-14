@@ -18,8 +18,9 @@ void process_keypress_H(int key, endui_mouse* mouse, vec_void_t* handles,
                         EWH** drag_window) {
   if (key == settings.menu_toggle_key) {
     main_menu->hidden = !main_menu->hidden;
+  } else {
+    ((process_keypress_t)process_keypress_TR)(key, mouse, handles, drag_window);
   }
-  ((process_keypress_t)process_keypress_TR)(key, mouse, handles, drag_window);
 }
 
 int settings_main(void) {

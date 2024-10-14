@@ -31,11 +31,6 @@ typedef struct EWH {
   bool hidden;
 } EWH;
 
-#define SIZEOF_EWH                                                      \
-  sizeof(int) + sizeof(int) + sizeof(int) + sizeof(int) + sizeof(int) + \
-      sizeof(int) + sizeof(int) + sizeof(void *) + sizeof(void *) +     \
-      sizeof(void *) + sizeof(void *) + sizeof(bool)
-
 EWH *ewh_new();
 EWH *ewh_new_window(int x, int y, int width, int height, const char *title);
 EWH *ewh_new_button(int x, int y, int width, int height, const char *title,

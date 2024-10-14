@@ -56,7 +56,7 @@ app_exec_result *run_app(const char *name) {
   pthread_create(&dlth, NULL, main_f, NULL);
 
   if (res->success && res->handle) {
-    vec_push(&app_handles, &res);
+    vec_push(&app_handles, (void *)res);
   }
   return res;
 #undef handle_error
@@ -132,8 +132,6 @@ int main() {
 
   // uninitalize
 
-  endui_fini();
-
   // close apps
   for (int i = 0; i < app_handles.length; i++) {
     app_exec_result *app = (app_exec_result *)app_handles.data[i];
@@ -146,7 +144,9 @@ int main() {
         dlclose(app->handle);
       }
     }
+    free(app);
   }
+  endui_fini();
 
   // -----------
 }
