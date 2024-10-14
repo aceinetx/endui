@@ -7,6 +7,35 @@ EWH *ewh_new_button(int x, int y, int width, int height, const char *title, EWH 
 void ewh_add(EWH* w) // add a window to handles
 WINDOW *endui_scr // ncurses stdscr pointer
 ```
+## Hooking
+EndUI Supports functions hooking with [libmem](https://github.com/rdbo/libmem)<br>
+There is only a few functions you can hook, but the list will extend in the future!
+```c
+#include <endapi.h>
+#include <libmem/libmem.h>
+#include <mouse.h>
+#include <window.h>
+
+lm_address_t process_keypress_TR; /* trampoline to process_keypress */
+
+void process_keypress_H(int key, endui_mouse* mouse, vec_void_t* handles,
+                        EWH** drag_window) { /* our hook */
+  if (key == 'p') { /* or any other key */
+    /* do stuff */
+  }
+  ((process_keypress_t)process_keypress_TR)(key, mouse, handles, drag_window); /* call the original function */
+}
+
+void main(void) {
+  LM_HookCode((lm_address_t)process_keypress, (lm_address_t)process_keypress_H,
+              &process_keypress_TR); /* hook the function
+                                        you may not need to cast to lm_address_t, but it depends on your
+                                        compiler and your compiler options */
+}
+
+void endui_fini(){ return; }
+```
+
 ## Examples
 ### Simple window with a button
 ```c
@@ -18,7 +47,7 @@ bool callback(struct EWH* sender, void* arg) {
   sender->width = 9;  // make the text in the center
 }
 
-int main(void) {
+void main(void) {
   EWH* window = ewh_new_window(1, 1, 15, 10, "Simple window");
   EWH* button = ewh_new_button(1, 1, 10, 3, "Click me", window);
   button->ewh_callback = callback;
