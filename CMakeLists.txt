@@ -11,7 +11,7 @@ if(NOT Curses_FOUND)
 endif()
 
 # compile endui
-set(SOURCES "src/endui.c" "src/window.c" "src/vec.c" "src/drawing.c" "src/keyboard.c" "src/ezheap/ezheap.c" "src/segcatch.c" "src/endfs.c")
+set(SOURCES "src/endui.c" "src/window.c" "src/vec.c" "src/drawing.c" "src/keyboard.c" "src/ezheap/ezheap.c" "src/segcatch.c" "src/endfs.c" "src/virtual_desktop.c")
 
 add_executable("endui" ${SOURCES})
 target_link_libraries("endui" "ncurses" "libmem") # if you don't have a x86_64 machine, you'll have to compile libmem yourself

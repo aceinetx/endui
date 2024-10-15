@@ -1,33 +1,43 @@
 #define ENDUI_IMPL
+#include <virtual_desktop.h>
+
 #include "includes.h"
 
-wchar_t graphics[] = {L'▒', L'▓', L'▒'};
-
 void empty_screen() {
+  attron(COLOR_PAIR(242));
   for (int i = 0; i < getmaxy(stdscr); i++) {
     for (int j = 0; j < getmaxx(stdscr); j++) {
-      attron(COLOR_PAIR(242));
-      mvaddwstr(i, j, &graphics[0]);
-      attroff(COLOR_PAIR(242));
+      mvprintw(i, j, ".");
     }
   }
+  attroff(COLOR_PAIR(242));
 }
 
 void draw_windows(vec_void_t *handles, EWH *drag_window, endui_mouse *mouse) {
+  /* fix newly appeared windows */
+  for (int wi = 0; wi < handles->length; wi++) {
+    EWH *window = (EWH *)handles->data[wi];
+
+    if (window == NULL) continue;
+    if (window->virtual_desktop_id == 0)
+      window->virtual_desktop_id = *get_desktop_id_ptr();
+  }
+
   /* draw parent windows first */
   for (int wi = 0; wi < handles->length; wi++) {
     EWH *window = (EWH *)handles->data[wi];
 
     if (window == NULL) continue;
 
-    if (window->parent == NULL && window->hidden == false) {
+    if (window->parent == NULL && window->hidden == false &&
+        window->virtual_desktop_id == *get_desktop_id_ptr()) {
       int end_y = window->y + window->height;
       int end_x = window->x + window->width;
 
       for (int x = window->x; x < end_x; x++) {
         for (int y = window->y; y < end_y; y++) {
           attron(COLOR_PAIR(249));
-          mvaddwstr(y, x, &graphics[2]);
+          mvprintw(y, x, "##");
           attroff(COLOR_PAIR(249));
         }
       }
@@ -52,7 +62,9 @@ void draw_windows(vec_void_t *handles, EWH *drag_window, endui_mouse *mouse) {
     if (window->parent == NULL) continue;
 
     window->hidden = window->parent->hidden;
-    if (!window->hidden) {
+    window->virtual_desktop_id = window->parent->virtual_desktop_id;
+    if (!window->hidden &&
+        window->virtual_desktop_id == *get_desktop_id_ptr()) {
       switch (window->child_class) {
         case EWH_BUTTON:
           int end_y = window->parent->y + window->y + window->height;
@@ -62,12 +74,11 @@ void draw_windows(vec_void_t *handles, EWH *drag_window, endui_mouse *mouse) {
             for (int y = window->parent->y + window->y; y < end_y; y++) {
               int color = 247;
               if (window->clicked_frames > 0) {
-                color = 240;
+                color = 0;
                 window->clicked_frames--;
               }
-
               attron(COLOR_PAIR(color));
-              mvaddwstr(y, x, &graphics[1]);
+              mvaddstr(y, x, "|");
               attroff(COLOR_PAIR(color));
             }
           }
@@ -89,5 +100,5 @@ void draw_windows(vec_void_t *handles, EWH *drag_window, endui_mouse *mouse) {
       }
     }
   }
-  mvprintw(mouse->y, mouse->x, ".");
+  mvprintw(mouse->y, mouse->x, "*");
 }

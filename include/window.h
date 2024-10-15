@@ -25,6 +25,7 @@ typedef struct EWH {
   int child_class;
   int flags;
   int clicked_frames;
+  char virtual_desktop_id;
   struct EWH *parent;
   bool (*ewh_callback)(struct EWH *, void *);
   char *title;

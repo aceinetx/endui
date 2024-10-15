@@ -3,6 +3,7 @@
 #include <fnptr.h>
 #include <includes.h>
 #include <libmem/libmem.h>
+#include <virtual_desktop.h>
 
 #define TARGET_FPS 60
 #define FRAME_TIME (1000000 / TARGET_FPS)
@@ -90,6 +91,8 @@ void endui_init() {
   symbols.run_app = run_app;
   symbols.ewh_add = ewh_add;
   symbols.draw_windows = draw_windows;
+  symbols.get_desktop_id_ptr = get_desktop_id_ptr;
+  symbols.get_max_desktops = get_max_desktops;
 }
 
 void endui_fini() {

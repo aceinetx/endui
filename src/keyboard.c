@@ -1,4 +1,6 @@
 #define ENDUI_IMPL
+#include <virtual_desktop.h>
+
 #include "includes.h"
 
 void process_keypress(int key, endui_mouse *mouse, vec_void_t *handles,
@@ -23,6 +25,7 @@ void process_keypress(int key, endui_mouse *mouse, vec_void_t *handles,
       for (int i = 0; i < handles->length; i++) {
         EWH *window = (EWH *)handles->data[i];
         if (window == NULL) continue;
+        if (window->virtual_desktop_id != *get_desktop_id_ptr()) continue;
 
         if (window->parent == NULL) {
           if (*drag_window == NULL) {
@@ -52,7 +55,7 @@ void process_keypress(int key, endui_mouse *mouse, vec_void_t *handles,
                    (window->parent->y + window->y + window->height))) {
                 if (window->ewh_callback != NULL) {
                   window->ewh_callback(window, NULL);
-                  window->clicked_frames = 50;
+                  window->clicked_frames = 70;
                   break;
                 }
               }
@@ -81,7 +84,19 @@ void process_keypress(int key, endui_mouse *mouse, vec_void_t *handles,
         if (!(*drag_window)->flags & EWH_NORESIZE) (*drag_window)->width++;
       }
       break;
+    case 'k':
+      (*get_desktop_id_ptr())++;
+
+      break;
+    case 'j':
+      (*get_desktop_id_ptr())--;
+
+      break;
   }
+  if (*get_desktop_id_ptr() > get_max_desktops()) {
+    *get_desktop_id_ptr() = get_max_desktops();
+  } else if (*get_desktop_id_ptr() < 1)
+    *get_desktop_id_ptr() = 1;
 
   if (mouse->x <= 0) mouse->x = 0;
   if (mouse->x >= ncurses_wx) mouse->x = ncurses_wx - 1;

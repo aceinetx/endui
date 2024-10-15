@@ -9,7 +9,14 @@ WINDOW *endui_scr // ncurses stdscr pointer
 ```
 ## Hooking
 EndUI Supports functions hooking with [libmem](https://github.com/rdbo/libmem)<br>
-There is only a few functions you can hook, but the list will extend in the future!
+There is only a few functions you can hook, but the list will extend in the future!<br>
+#### Functions you can hook
+- process_keypress
+- run_app
+- ewh_add
+- draw_windows
+- get_desktop_id_ptr
+- get_max_desktops
 ```c
 #include <endapi.h>
 #include <hooking.h>
