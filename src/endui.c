@@ -112,7 +112,10 @@ int main() {
 
   segcatch_init((fini_t)endui_fini); /* initalize segmentation fault catching */
 
-  run_app("./libeverything.so"); /* open default app */
+  app_exec_result *app_res = run_app("./libeverything.so");
+  if (app_res->success == false) { /* open default app */
+    free(app_res);
+  }
 
   // ---------
 
