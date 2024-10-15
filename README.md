@@ -12,6 +12,7 @@ A sequel to TWn, completely rewritten
 - Easy to develop apps
 ### Cons
 - Doesn't support GTK/Qt (or others) gui frameworks
+- Every app is a .so file which can cause linker errors at runtime
 ## API
 - [API documentation](APIDOCS.md)
 
