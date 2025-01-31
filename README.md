@@ -1,5 +1,5 @@
 # endui
-A sequel to [TWn](https://github.com/aceinetx/endui), completely rewritten
+A sequel to [TWn](https://github.com/aceinetx/twn), completely rewritten
 ## Why rewrite?
 - TWn had many bugs and crashes
 - I wanted to rewrite it completely with C (maybe c3) for more speed
