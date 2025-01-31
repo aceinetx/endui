@@ -23,7 +23,7 @@ There is only a few functions you can hook, but the list will extend in the futu
 #include <mouse.h>
 #include <window.h>
 
-lm_address_t process_keypress_TR; /* trampoline to process_keypress */
+addr_t process_keypress_TR; /* trampoline to process_keypress */
 
 void process_keypress_H(int key, endui_mouse* mouse, vec_void_t* handles,
                         EWH** drag_window) { /* our hook */
