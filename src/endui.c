@@ -24,6 +24,8 @@ typedef fnptr(void, endapi_fini);
 /* functions */
 void ewh_add(EWH *w) { vec_push(&handles, w); }
 
+char errs[1024];
+
 app_exec_result *run_app(const char *name) {
   app_exec_result *res = malloc(sizeof(*res));
   res->success = true;
@@ -43,6 +45,7 @@ app_exec_result *run_app(const char *name) {
   if (!res->handle) {
     res->success = false;
     res->handle = NULL;
+    res->_dlerror = dlerror();
     return res;
   }
 

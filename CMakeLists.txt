@@ -36,5 +36,5 @@ target_compile_definitions("endui" PUBLIC NCURSES_WIDECHAR=1)
 
 # compile apps
 add_library("everything" SHARED "src/apps/everything.c" "src/apps/settings.c" "src/apps/endbar.c" "src/endapi.c" "src/window.c" "src/endfs.c")
-target_link_libraries("everything" ${ENDUI_HOOK_LIB})
+target_link_libraries("everything" "ncurses" ${ENDUI_HOOK_LIB})
 target_compile_definitions("everything" PUBLIC ${ENDUI_DEFS})

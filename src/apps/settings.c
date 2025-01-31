@@ -13,7 +13,7 @@ typedef struct {
 settings_t settings;
 EWH* settings_window = NULL;
 
-lm_address_t process_keypress_TR;
+addr_t process_keypress_TR;
 
 void process_keypress_H(int key, endui_mouse* mouse, vec_void_t* handles,
                         EWH** drag_window) {
@@ -59,6 +59,7 @@ bool setMenuBindCallback(struct EWH* sender, void* arg) {
            (char)settings.menu_toggle_key);
 
   save_cfg(&settings);
+  return true;
 }
 
 int settings_main(void) {
@@ -87,4 +88,5 @@ int settings_main(void) {
   ewh_add(labelKeybinds);
   ewh_add(separatorKeybinds);
   ewh_add(bindMenuButton);
+  return 0;
 }
