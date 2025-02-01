@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.20)
 project(endui)
 
+set(DOBBY_DEBUG OFF)
+
 # setup stuff
 add_subdirectory("lib/dobby")
 include_directories("include" "include/ezheap" "include/apps" "lib/dobby/include")

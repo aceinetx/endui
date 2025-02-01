@@ -28,7 +28,8 @@ void *__ezheap_malloc(size_t __size, ezheap_t *__ezheap) {
     if (new_heap_addresses == NULL) {
       printf("[EZHEAP] malloc() failed: _new_heap_addresses == NULL\n");
 
-      if (__ezheap->heap_addresses != NULL) free(__ezheap->heap_addresses);
+      if (__ezheap->heap_addresses != NULL)
+        free(__ezheap->heap_addresses);
       abort();
     }
     memcpy(new_heap_addresses, __ezheap->heap_addresses, old_array_len_bytes);
@@ -49,9 +50,8 @@ void *__ezheap_malloc(size_t __size, ezheap_t *__ezheap) {
 void *__ezheap_malloc_errsafe(size_t __size, ezheap_t *__ezheap) {
   void *result = __ezheap_malloc(__size, __ezheap);
   if (result == NULL) {
-    printf(
-        "[EZHEAP] __ezheap_malloc() failed: either malloc() failed, or bad "
-        "heap_addresses\n");
+    printf("[EZHEAP] __ezheap_malloc() failed: either malloc() failed, or bad "
+           "heap_addresses\n");
     abort();
   }
   return result;
@@ -65,7 +65,8 @@ void *__ezheap_malloc_str_errsafe(size_t __size, const char *__str,
 }
 
 void __ezheap_cleanup(ezheap_t *__ezheap) {
-  if (__ezheap->heap_addresses == NULL) return;
+  if (__ezheap->heap_addresses == NULL)
+    return;
 
   for (int i = 0; i < __ezheap->heap_addresses_len; i++) {
     __ezheap_stdfree(__ezheap->heap_addresses[i], __ezheap);

@@ -4,4 +4,4 @@
 char *get_desktop_id_ptr();
 char get_max_desktops();
 
-#endif  // VIRTUAL_DESKTOP_H
+#endif // VIRTUAL_DESKTOP_H

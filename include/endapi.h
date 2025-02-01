@@ -35,4 +35,4 @@ typedef struct {
   get_max_desktops_t get_max_desktops;
 } api_symbols;
 
-#endif  // ENDAPI_H
+#endif // ENDAPI_H

@@ -58,8 +58,8 @@ typedef struct {
   union {
     uint64_t x[29];
     struct {
-      uint64_t x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22,
-          x23, x24, x25, x26, x27, x28;
+      uint64_t x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14,
+          x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28;
     } regs;
   } general;
 
@@ -71,9 +71,10 @@ typedef struct {
     struct {
       FPReg q0, q1, q2, q3, q4, q5, q6, q7;
       // [!!! READ ME !!!]
-      // for Arm64, can't access q8 - q31, unless you enable full floating-point register pack
-      FPReg q8, q9, q10, q11, q12, q13, q14, q15, q16, q17, q18, q19, q20, q21, q22, q23, q24, q25, q26, q27, q28, q29,
-          q30, q31;
+      // for Arm64, can't access q8 - q31, unless you enable full floating-point
+      // register pack
+      FPReg q8, q9, q10, q11, q12, q13, q14, q15, q16, q17, q18, q19, q20, q21,
+          q22, q23, q24, q25, q26, q27, q28, q29, q30, q31;
     } regs;
   } floating;
 } DobbyRegisterContext;
@@ -99,7 +100,8 @@ typedef struct {
 
   union {
     struct {
-      uint64_t rax, rbx, rcx, rdx, rbp, rsp, rdi, rsi, r8, r9, r10, r11, r12, r13, r14, r15;
+      uint64_t rax, rbx, rcx, rdx, rbp, rsp, rdi, rsi, r8, r9, r10, r11, r12,
+          r13, r14, r15;
     } regs;
   } general;
 
@@ -108,24 +110,29 @@ typedef struct {
 } DobbyRegisterContext;
 #endif
 
-#define install_hook_name(name, fn_ret_t, fn_args_t...)                                                                \
-  static fn_ret_t fake_##name(fn_args_t);                                                                              \
-  static fn_ret_t (*orig_##name)(fn_args_t);                                                                           \
-  /* __attribute__((constructor)) */ static void install_hook_##name(void *sym_addr) {                                 \
-    DobbyHook(sym_addr, (dobby_dummy_func_t)fake_##name, (dobby_dummy_func_t *)&orig_##name);                          \
-    return;                                                                                                            \
-  }                                                                                                                    \
+#define install_hook_name(name, fn_ret_t, fn_args_t...)                        \
+  static fn_ret_t fake_##name(fn_args_t);                                      \
+  static fn_ret_t (*orig_##name)(fn_args_t);                                   \
+  /* __attribute__((constructor)) */ static void install_hook_##name(          \
+      void *sym_addr) {                                                        \
+    DobbyHook(sym_addr, (dobby_dummy_func_t)fake_##name,                       \
+              (dobby_dummy_func_t *)&orig_##name);                             \
+    return;                                                                    \
+  }                                                                            \
   fn_ret_t fake_##name(fn_args_t)
 
 // memory code patch
 int DobbyCodePatch(void *address, uint8_t *buffer, uint32_t buffer_size);
 
 // function inline hook
-int DobbyHook(void *address, dobby_dummy_func_t replace_func, dobby_dummy_func_t *origin_func);
+int DobbyHook(void *address, dobby_dummy_func_t replace_func,
+              dobby_dummy_func_t *origin_func);
 
 // dynamic binary instruction instrument
-// for Arm64, can't access q8 - q31, unless enable full floating-point register pack
-typedef void (*dobby_instrument_callback_t)(void *address, DobbyRegisterContext *ctx);
+// for Arm64, can't access q8 - q31, unless enable full floating-point register
+// pack
+typedef void (*dobby_instrument_callback_t)(void *address,
+                                            DobbyRegisterContext *ctx);
 int DobbyInstrument(void *address, dobby_instrument_callback_t pre_handler);
 
 // destroy and restore code patch
@@ -137,7 +144,8 @@ const char *DobbyGetVersion();
 void *DobbySymbolResolver(const char *image_name, const char *symbol_name);
 
 // import table replace
-int DobbyImportTableReplace(char *image_name, char *symbol_name, dobby_dummy_func_t fake_func,
+int DobbyImportTableReplace(char *image_name, char *symbol_name,
+                            dobby_dummy_func_t fake_func,
                             dobby_dummy_func_t *orig_func);
 
 // for arm, Arm64, try use b xxx instead of ldr absolute indirect branch

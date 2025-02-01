@@ -1,0 +1,12 @@
+BasedOnStyle: LLVM
+
+IndentWidth: 2
+TabWidth: 2
+UseTab: Always
+ColumnLimit: 120
+
+FixNamespaceComments: true
+
+ReflowComments: false
+SortIncludes : true
+AllowShortFunctionsOnASingleLine: false

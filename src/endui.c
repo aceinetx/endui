@@ -36,10 +36,10 @@ app_exec_result *run_app(const char *name) {
   res->handle = dlopen(name, RTLD_NOW); /* open the app's main library */
                                         /* kinda how android does */
 
-#define handle_error()                       \
-  if ((res->_dlerror = dlerror()) != NULL) { \
-    res->success = false;                    \
-    return res;                              \
+#define handle_error()                                                         \
+  if ((res->_dlerror = dlerror()) != NULL) {                                   \
+    res->success = false;                                                      \
+    return res;                                                                \
   }
 
   if (!res->handle) {
@@ -103,7 +103,8 @@ void endui_fini() {
 
   for (int i = 0; i < handles.length; i++) {
     EWH *handle = (EWH *)handles.data[i];
-    if (handle->title != NULL) free(handle->title);
+    if (handle->title != NULL)
+      free(handle->title);
     free(handle);
   }
   vec_deinit(&handles);
@@ -132,7 +133,8 @@ int main() {
     refresh();
 
     int k = getch();
-    if (k == 'q') break;
+    if (k == 'q')
+      break;
 
     process_keypress(k, &mouse, &handles, &drag_window);
 

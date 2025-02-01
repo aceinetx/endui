@@ -7,7 +7,8 @@
 fini_t fini_f = NULL;
 
 void endui_segfault_handler(int signal, siginfo_t *si, void *arg) {
-  if (fini_f) fini_f();
+  if (fini_f)
+    fini_f();
   printf("============ Segmentation Fault ============\n");
   printf("if you see this message, endui was properly\n");
   printf("closed, so it's likely not an issue with\n");

@@ -19,9 +19,9 @@ extern ezheap_t __ezheap_instance;
 
 // we need to increment allocs & frees to make it match with valgrind
 #ifdef EZHEAP_DBG
-#define ezheap_init()                                       \
-  memset(&__ezheap_instance, 0, sizeof(__ezheap_instance)); \
-  __ezheap_instance.allocs = 1;                             \
+#define ezheap_init()                                                          \
+  memset(&__ezheap_instance, 0, sizeof(__ezheap_instance));                    \
+  __ezheap_instance.allocs = 1;                                                \
   __ezheap_instance.frees = 1
 #else
 #define ezheap_init() memset(&__ezheap_instance, 0, sizeof(__ezheap_instance))
@@ -32,16 +32,16 @@ extern ezheap_t __ezheap_instance;
 #define ezheap_destruct() __ezheap_cleanup(&__ezheap_instance)
 
 #ifdef EZHEAP_DBG
-#define __ezheap_stdmalloc(x, y) \
-  malloc(x);                     \
+#define __ezheap_stdmalloc(x, y)                                               \
+  malloc(x);                                                                   \
   y->allocs++
 #else
 #define __ezheap_stdmalloc(x, y) malloc(x)
 #endif
 
 #ifdef EZHEAP_DBG
-#define __ezheap_stdfree(x, y) \
-  free(x);                     \
+#define __ezheap_stdfree(x, y)                                                 \
+  free(x);                                                                     \
   y->frees++
 #else
 #define __ezheap_stdfree(x, y) free(x)

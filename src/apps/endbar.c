@@ -14,7 +14,7 @@ bool endbar_toggle_menu(struct EWH *sender, void *arg) {
 }
 
 bool endbar_toggle_settings(struct EWH *sender, void *arg) {
-	settings_window->virtual_desktop_id = *get_desktop_id_ptr();
+  settings_window->virtual_desktop_id = *get_desktop_id_ptr();
   settings_window->hidden = !settings_window->hidden;
   return true;
 }

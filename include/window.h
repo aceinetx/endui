@@ -39,14 +39,16 @@ EWH *ewh_new_button(int x, int y, int width, int height, const char *title,
 EWH *ewh_new_label(int x, int y, const char *title, EWH *parent);
 EWH *ewh_new_separator(int x, int y, int width, EWH *parent);
 
-#define ewh_title(w, t)                \
-  if (w->title) free(w->title);        \
-  w->title = malloc(WINDOW_TITLE_MAX); \
+#define ewh_title(w, t)                                                        \
+  if (w->title)                                                                \
+    free(w->title);                                                            \
+  w->title = malloc(WINDOW_TITLE_MAX);                                         \
   strncpy(w->title, t, WINDOW_TITLE_MAX)
 
-#define ewh_class(w, t)                \
-  if (w->class) free(w->class);        \
-  w->class = malloc(WINDOW_CLASS_MAX); \
+#define ewh_class(w, t)                                                        \
+  if (w->class)                                                                \
+    free(w->class);                                                            \
+  w->class = malloc(WINDOW_CLASS_MAX);                                         \
   strncpy(w->class, t, WINDOW_CLASS_MAX)
 
 #endif
