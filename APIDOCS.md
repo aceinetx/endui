@@ -8,7 +8,7 @@ void ewh_add(EWH* w) // add a window to handles
 WINDOW *endui_scr // ncurses stdscr pointer
 ```
 ## Hooking
-EndUI Supports functions hooking with [libmem (x86)](https://github.com/rdbo/libmem) and [dobby (arm)](https://github.com/jmpews/Dobby)<br>
+EndUI Supports functions hooking with [dobby](https://github.com/jmpews/Dobby)<br>
 There is only a few functions you can hook, but the list will extend in the future!<br>
 #### Functions you can hook
 - process_keypress
