@@ -5,6 +5,6 @@
 bool settings_callback_button1(struct EWH *sender, void *arg);
 int settings_main(void);
 
-extern EWH *settings_window;
+extern EWH *settingsWindow;
 
 #endif // SETTINGS_H

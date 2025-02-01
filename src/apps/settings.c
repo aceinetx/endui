@@ -11,7 +11,7 @@ typedef struct {
 } settings_t;
 
 settings_t settings;
-EWH *settings_window = NULL;
+EWH *settingsWindow = NULL;
 
 addr_t process_keypress_TR;
 
@@ -71,22 +71,25 @@ int settings_main(void) {
     load_cfg(&settings);
   }
 
-  settings_window = ewh_new_window(17, 1, 20, 10, "Settings");
-  EWH *labelKeybinds = ewh_new_label(1, 2, "Keybinds: ", settings_window);
-  EWH *separatorKeybinds = ewh_new_separator(1, 5, 18, settings_window);
-  EWH *bindMenuButton = ewh_new_button(1, 3, 9, 1, "Menu: ", settings_window);
+  settingsWindow = ewh_new_window(17, 1, 20, 10, "Settings");
+  EWH *labelKeybinds = ewh_new_label(1, 2, "Keybinds: ", settingsWindow);
+  EWH *separatorKeybinds = ewh_new_separator(1, 5, 18, settingsWindow);
+  EWH *bindMenuButton = ewh_new_button(1, 3, 9, 1, "Menu: ", settingsWindow);
   snprintf(bindMenuButton->title, WINDOW_TITLE_MAX, "Menu: %c",
            (char)settings.menu_toggle_key);
   bindMenuButton->ewh_callback = setMenuBindCallback;
 
   separatorKeybinds->width = separatorKeybinds->parent->width - 2;
 
+  EWH *infoLabel = ewh_new_label(1, 7, "EndUI by aceinetx", settingsWindow);
+
   endui_hook(process_keypress, process_keypress_H, &process_keypress_TR);
 
-  settings_window->hidden = true;
-  ewh_add(settings_window);
+  settingsWindow->hidden = true;
+  ewh_add(settingsWindow);
   ewh_add(labelKeybinds);
   ewh_add(separatorKeybinds);
   ewh_add(bindMenuButton);
+  ewh_add(infoLabel);
   return 0;
 }

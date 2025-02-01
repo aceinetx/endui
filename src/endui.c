@@ -2,7 +2,6 @@
 
 #include <fnptr.h>
 #include <includes.h>
-#include <libmem/libmem.h>
 #include <virtual_desktop.h>
 
 #define TARGET_FPS 60
@@ -88,7 +87,6 @@ void endui_init() {
   }
 
   /* initalize symbols */
-  /* pretty much deprecated */
   symbols.endui_scr = stdscr;
   symbols.process_keypress = process_keypress;
   symbols.run_app = run_app;
