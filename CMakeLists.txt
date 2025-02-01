@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.20)
 project(endui)
 
 # setup stuff
@@ -11,15 +11,14 @@ if(NOT Curses_FOUND)
   message(SEND_ERROR "Could not find curses")
 endif()
 
+set(ENDUI_HOOK_LIB "dobby")
+
 # compile endui
 set(SOURCES "src/endui.c" "src/window.c" "src/vec.c" "src/drawing.c" "src/keyboard.c" "src/ezheap/ezheap.c" "src/segcatch.c" "src/endfs.c" "src/virtual_desktop.c")
 
 add_executable("endui" ${SOURCES})
-set(ENDUI_HOOK_LIB "dobby")
-target_compile_definitions("endui" PUBLIC ${ENDUI_DEFS})
-target_link_libraries("endui" "ncurses" ${ENDUI_HOOK_LIB})
-
 target_compile_definitions("endui" PUBLIC NCURSES_WIDECHAR=1)
+target_link_libraries("endui" "ncurses" ${ENDUI_HOOK_LIB})
 
 # compile apps
 add_library("everything" SHARED "src/apps/everything.c" "src/apps/settings.c" "src/apps/endbar.c" "src/endapi.c" "src/window.c" "src/endfs.c")
