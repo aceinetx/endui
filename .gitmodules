@@ -1,0 +1,3 @@
+[submodule "lib/dobby"]
+	path = lib/dobby
+	url = https://github.com/jmpews/dobby
