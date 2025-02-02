@@ -5,6 +5,7 @@
 #include <mouse.h>
 #include <unistd.h>
 #include <window.h>
+#include <yhookmin.h>
 
 typedef struct {
   int menu_toggle_key;
@@ -13,14 +14,16 @@ typedef struct {
 settings_t settings;
 EWH *settingsWindow = NULL;
 
-addr_t process_keypress_TR;
+yHook_t pkh;
 
 void process_keypress_H(int key, endui_mouse *mouse, vec_void_t *handles,
                         EWH **drag_window) {
   if (key == settings.menu_toggle_key) {
     main_menu->hidden = !main_menu->hidden;
   } else {
-    ((process_keypress_t)process_keypress_TR)(key, mouse, handles, drag_window);
+    //((process_keypress_t)process_keypress_TR)(key, mouse, handles,
+    // drag_window);
+    yHookTrampoline(pkh, process_keypress, key, mouse, handles, drag_window);
   }
 }
 
@@ -83,7 +86,9 @@ int settings_main(void) {
 
   EWH *infoLabel = ewh_new_label(1, 7, "EndUI by aceinetx", settingsWindow);
 
-  endui_hook(process_keypress, process_keypress_H, &process_keypress_TR);
+  // endui_hook(process_keypress, process_keypress_H, &process_keypress_TR);
+  pkh = yHookInstall(process_keypress, process_keypress_H);
+  yHookEnable(pkh);
 
   settingsWindow->hidden = true;
   ewh_add(settingsWindow);
