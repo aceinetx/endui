@@ -8,7 +8,7 @@ void ewh_add(EWH* w) // add a window to handles
 WINDOW *endui_scr // ncurses stdscr pointer
 ```
 ## Hooking
-EndUI Supports functions hooking with [dobby](https://github.com/jmpews/Dobby)<br>
+EndUI Supports functions hooking with [yHook](https://github.com/aceinetx/yHook)<br>
 There is only a few functions you can hook, but the list will extend in the future!<br>
 #### Functions you can hook
 - process_keypress
@@ -23,19 +23,20 @@ There is only a few functions you can hook, but the list will extend in the futu
 #include <mouse.h>
 #include <window.h>
 
-addr_t process_keypress_TR; /* trampoline to process_keypress */
+yHook_t pkh; // our hook
 
 void process_keypress_H(int key, endui_mouse* mouse, vec_void_t* handles,
                         EWH** drag_window) { /* our hook */
   if (key == 'p') { /* or any other key */
     /* do stuff */
   }
-  ((process_keypress_t)process_keypress_TR)(key, mouse, handles, drag_window); /* call the original function */
+  yHookTrampoline(pkh, process_keypress, key, mouse, handles, drag_window); // call the original function
 }
 
 void main(void) {
   /* hook the function */
-  endui_hook(process_keypress, process_keypress_H, &process_keypress_TR); 
+  pkh = yHookInstall(process_keypress, process_keypress_H);
+  yHookEnable(pkh);
 }
 
 void endui_fini(){ return; }
