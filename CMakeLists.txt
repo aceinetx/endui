@@ -21,13 +21,18 @@ else()
 endif()
 
 # compile endui
-set(SOURCES "src/endui.c" "src/window.c" "src/vec.c" "src/drawing.c" "src/keyboard.c" "src/ezheap/ezheap.c" "src/segcatch.c" "src/endfs.c" "src/virtual_desktop.c")
+set(SOURCES "src/endui.c" "src/ezheap/ezheap.c" "src/segcatch.c")
+set(LIB_SOURCES "src/endlib.c" "src/window.c" "src/vec.c" "src/drawing.c" "src/keyboard.c" "src/ezheap/ezheap.c" "src/endfs.c" "src/virtual_desktop.c")
+
+add_library("endlib" SHARED ${LIB_SOURCES})
+set_target_properties("endlib" PROPERTIES OUTPUT_NAME "endui")
+target_link_libraries("endlib" "ncurses")
 
 add_executable("endui" ${SOURCES})
 target_compile_definitions("endui" PUBLIC NCURSES_WIDECHAR=1 ${ENDUI_DEFS})
-target_link_libraries("endui" "ncurses")
+target_link_libraries("endui" "ncurses" "endlib")
 
 # compile apps
-add_library("everything" SHARED "src/apps/everything.c" "src/apps/settings.c" "src/apps/endbar.c" "src/endapi.c" "src/window.c" "src/endfs.c")
+add_library("everything" SHARED "src/apps/everything.c" "src/apps/settings.c" "src/apps/endbar.c" "src/window.c" "src/endfs.c")
 target_link_libraries("everything" "ncurses")
 target_compile_definitions("everything" PUBLIC ${ENDUI_DEFS})

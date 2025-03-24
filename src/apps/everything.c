@@ -1,4 +1,3 @@
-#include <endapi.h>
 #include <endbar.h>
 #include <settings.h>
 #include <window.h>

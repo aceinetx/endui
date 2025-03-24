@@ -48,7 +48,9 @@ void draw_windows(vec_void_t *handles, EWH *drag_window, endui_mouse *mouse) {
         int text_y = window->y;
         int text_x = window->x;
         if (drag_window == window) {
-          mvaddwstr(text_y, text_x, L"• ");
+          mvaddstr(text_y, text_x, "• ");
+          // addwstr(L"• ");
+          // waddnwstr(stdscr, L"", -1);
           text_x += 2;
         }
         mvprintw(text_y, text_x, "%s", window->title);

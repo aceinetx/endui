@@ -1,5 +1,6 @@
 #define ENDUI_IMPL
 
+#include <endlib.h>
 #include <fnptr.h>
 #include <includes.h>
 #include <virtual_desktop.h>
@@ -8,20 +9,11 @@
 #define FRAME_TIME (1000000 / TARGET_FPS)
 
 /* vars/typedef's */
-vec_void_t handles;
-vec_void_t app_handles;
-EWH *drag_window = NULL;
-
-endui_mouse mouse = {0};
-
-api_symbols symbols;
 
 typedef fnptr(void *, endui_main);
-typedef fnptr(void, endapi_update_symbols, api_symbols *);
 typedef fnptr(void, endapi_fini);
 
 /* functions */
-void ewh_add(EWH *w) { vec_push(&handles, w); }
 
 char errs[1024];
 
@@ -30,7 +22,6 @@ app_exec_result *run_app(const char *name) {
   res->success = true;
 
   endui_main main_f;
-  endapi_update_symbols update_symbols;
 
   res->handle = dlopen(name, RTLD_NOW); /* open the app's main library */
                                         /* kinda how android does */
@@ -50,11 +41,9 @@ app_exec_result *run_app(const char *name) {
 
   main_f = dlsym(res->handle, "main");
   handle_error();
-  update_symbols = dlsym(res->handle, "__endui_update_symbols");
   handle_error();
 
   /* run main */
-  update_symbols(&symbols);
   pthread_t dlth;
   pthread_create(&dlth, NULL, main_f, NULL);
 
@@ -85,15 +74,6 @@ void endui_init() {
   for (int i = 0; i < COLORS; i++) {
     init_pair(i + 1, i, -1);
   }
-
-  /* initalize symbols */
-  symbols.endui_scr = stdscr;
-  symbols.process_keypress = process_keypress;
-  symbols.run_app = run_app;
-  symbols.ewh_add = ewh_add;
-  symbols.draw_windows = draw_windows;
-  symbols.get_desktop_id_ptr = get_desktop_id_ptr;
-  symbols.get_max_desktops = get_max_desktops;
 }
 
 void endui_fini() {

@@ -32,6 +32,8 @@ typedef struct EWH {
   bool hidden;
 } EWH;
 
+void ewh_add(EWH *w);
+
 EWH *ewh_new();
 EWH *ewh_new_window(int x, int y, int width, int height, const char *title);
 EWH *ewh_new_button(int x, int y, int width, int height, const char *title,

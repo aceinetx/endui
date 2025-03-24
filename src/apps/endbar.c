@@ -1,7 +1,7 @@
 #include <apps/settings.h>
-#include <endapi.h>
 #include <everything.h>
 #include <ncurses.h>
+#include <virtual_desktop.h>
 #include <window.h>
 
 EWH *bar = NULL;
@@ -20,8 +20,7 @@ bool endbar_toggle_settings(struct EWH *sender, void *arg) {
 }
 
 void endbar_main() {
-  bar =
-      ewh_new_window(0, getmaxy(endui_scr) - 1, getmaxx(endui_scr), 1, "EndUI");
+  bar = ewh_new_window(0, getmaxy(stdscr) - 1, getmaxx(stdscr), 1, "EndUI");
   bar->flags = EWH_NORESIZE | EWH_NOTITLE;
   ewh_add(bar);
 
@@ -31,7 +30,7 @@ void endbar_main() {
 
   EWH *virtual_desktop_label = ewh_new_label(11, 0, "", bar);
   main_menu = ewh_new_window(0, 0, 15, 10, "Main");
-  main_menu->y = getmaxy(endui_scr) - main_menu->height - 1;
+  main_menu->y = getmaxy(stdscr) - main_menu->height - 1;
   main_menu->flags = EWH_NORESIZE | EWH_NOTITLE;
   main_menu->hidden = true;
   ewh_add(main_menu);

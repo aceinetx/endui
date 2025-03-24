@@ -2,7 +2,6 @@
 #include <app_exec_result.h>
 #include <dlfcn.h>
 #include <drawing.h>
-#include <endapi.h>
 #include <ezheap.h>
 #include <keyboard.h>
 #include <locale.h>

@@ -1,8 +1,9 @@
 #include <apps/endbar.h>
-#include <endapi.h>
 #include <endfs.h>
 #include <hooking.h>
+#include <keyboard.h>
 #include <mouse.h>
+#include <ncurses.h>
 #include <unistd.h>
 #include <window.h>
 #include <yhookmin.h>
@@ -52,11 +53,11 @@ void load_cfg(settings_t *settings) {
 }
 
 bool setMenuBindCallback(struct EWH *sender, void *arg) {
-  nodelay(endui_scr, FALSE);
-  mvwprintw(endui_scr, 0, 0, "Press any key...");
-  wrefresh(endui_scr);
-  settings.menu_toggle_key = wgetch(endui_scr);
-  nodelay(endui_scr, TRUE);
+  nodelay(stdscr, FALSE);
+  mvwprintw(stdscr, 0, 0, "Press any key...");
+  wrefresh(stdscr);
+  settings.menu_toggle_key = wgetch(stdscr);
+  nodelay(stdscr, TRUE);
 
   snprintf(sender->title, WINDOW_TITLE_MAX, "Menu: %c",
            (char)settings.menu_toggle_key);

@@ -1,5 +1,8 @@
+#include <endlib.h>
 #include <vec.h>
 #include <window.h>
+
+void ewh_add(EWH *w) { vec_push(&handles, w); }
 
 EWH *ewh_new() {
   EWH *result = (EWH *)malloc(sizeof(*result));
