@@ -18,7 +18,6 @@ You can hook all functions you can find in libendui.so<br>
 - get_desktop_id_ptr
 - get_max_desktops
 ```c
-#include <endapi.h>
 #include <hooking.h>
 #include <mouse.h>
 #include <window.h>
@@ -45,7 +44,6 @@ void endui_fini(){ return; }
 ## Examples
 ### Simple window with a button
 ```c
-#include <endapi.h>
 #include <window.h>
 
 bool callback(struct EWH* sender, void* arg) {
