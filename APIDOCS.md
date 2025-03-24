@@ -9,7 +9,7 @@ WINDOW *endui_scr // ncurses stdscr pointer
 ```
 ## Hooking
 EndUI Supports functions hooking with [yHook](https://github.com/aceinetx/yHook)<br>
-There is only a few functions you can hook, but the list will extend in the future!<br>
+You can hook all functions you can find in libendui.so<br>
 #### Functions you can hook
 - process_keypress
 - run_app
