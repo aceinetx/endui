@@ -22,8 +22,6 @@ void process_keypress_H(int key, endui_mouse *mouse, vec_void_t *handles,
   if (key == settings.menu_toggle_key) {
     main_menu->hidden = !main_menu->hidden;
   } else {
-    //((process_keypress_t)process_keypress_TR)(key, mouse, handles,
-    // drag_window);
     yHookTrampoline(pkh, process_keypress, key, mouse, handles, drag_window);
   }
 }
@@ -67,6 +65,8 @@ bool setMenuBindCallback(struct EWH *sender, void *arg) {
 }
 
 int settings_main(void) {
+  EWH *labelKeybinds, *separatorKeybinds, *bindMenuButton, *infoLabel;
+
   settings.menu_toggle_key = 'h';
 
   if (access("./endui.bin", F_OK) == -1) {
@@ -76,19 +76,18 @@ int settings_main(void) {
   }
 
   settingsWindow = ewh_new_window(17, 1, 20, 10, "Settings");
-  EWH *labelKeybinds = ewh_new_label(1, 2, "Keybinds: ", settingsWindow);
-  EWH *separatorKeybinds = ewh_new_separator(1, 5, 18, settingsWindow);
-  EWH *bindMenuButton = ewh_new_button(1, 3, 9, 1, "Menu: ", settingsWindow);
+  labelKeybinds = ewh_new_label(1, 2, "Keybinds: ", settingsWindow);
+  separatorKeybinds = ewh_new_separator(1, 5, 18, settingsWindow);
+  bindMenuButton = ewh_new_button(1, 3, 9, 1, "Menu: ", settingsWindow);
   snprintf(bindMenuButton->title, WINDOW_TITLE_MAX, "Menu: %c",
            (char)settings.menu_toggle_key);
   bindMenuButton->ewh_callback = setMenuBindCallback;
 
   separatorKeybinds->width = separatorKeybinds->parent->width - 2;
 
-  EWH *infoLabel = ewh_new_label(1, 7, "EndUI by aceinetx", settingsWindow);
+  infoLabel = ewh_new_label(1, 7, "EndUI by aceinetx", settingsWindow);
 
-  // endui_hook(process_keypress, process_keypress_H, &process_keypress_TR);
-  pkh = yHookInstall(process_keypress, process_keypress_H);
+  pkh = yHookInstall((yaddr_t)process_keypress, (yaddr_t)process_keypress_H);
   yHookEnable(pkh);
 
   settingsWindow->hidden = true;

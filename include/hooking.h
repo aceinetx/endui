@@ -4,4 +4,4 @@
 #include <yhookmin.h>
 #define addr_t yaddr_t
 
-#endif // HOOKING_H
+#endif /* HOOKING_H */

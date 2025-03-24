@@ -1,9 +1,14 @@
 cmake_minimum_required(VERSION 3.20)
 project(endui)
 
+set(CMAKE_C_STANDARD 90)
+set(CMAKE_C_STANDARD_REQUIRED YES)
+
 # setup stuff
 include_directories("include" "include/ezheap" "include/apps")
 link_directories("lib/x86" "lib/armv7")
+
+add_compile_options("-Wall" "-Wextra" "-Wno-unused-parameter" "-Wno-unused-value" "-Wno-pointer-arith" "-Wno-variadic-macros" "-Wno-main" "-Wno-sign-compare")
 
 find_package(Curses)
 if(NOT Curses_FOUND)

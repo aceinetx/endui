@@ -5,16 +5,12 @@
 #include <stdbool.h>
 #include <vec.h>
 
-typedef enum {
-  EWH_NORESIZE = 1,
-  EWH_NOMOVE = 2,
-  EWH_NOTITLE = 4,
-} EWH_WINFLAGS;
+typedef enum { EWH_NORESIZE = 1, EWH_NOMOVE = 2, EWH_NOTITLE = 4 } EWH_WINFLAGS;
 
 typedef enum {
   EWH_BUTTON = 0x0001,
   EWH_LABEL = 0x0002,
-  EWH_SEPARATOR = 0x0003,
+  EWH_SEPARATOR = 0x0003
 } EWH_CHILDCLASS;
 
 typedef struct EWH {

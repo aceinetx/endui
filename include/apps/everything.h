@@ -4,4 +4,4 @@
 #include <stdbool.h>
 extern bool active;
 
-#endif // EVERYTHING_H
+#endif /* EVERYTHING_H */

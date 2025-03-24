@@ -5,8 +5,10 @@
 
 void process_keypress(int key, endui_mouse *mouse, vec_void_t *handles,
                       EWH **drag_window) {
-  int ncurses_wy = getmaxy(stdscr);
-  int ncurses_wx = getmaxx(stdscr);
+  int ncurses_wy, ncurses_wx, i;
+
+  ncurses_wy = getmaxy(stdscr);
+  ncurses_wx = getmaxx(stdscr);
 
   switch (key) {
   case KEY_UP:
@@ -22,7 +24,7 @@ void process_keypress(int key, endui_mouse *mouse, vec_void_t *handles,
     mouse->x++;
     break;
   case 'z':
-    for (int i = 0; i < handles->length; i++) {
+    for (i = 0; i < handles->length; i++) {
       EWH *window = (EWH *)handles->data[i];
       if (window == NULL)
         continue;

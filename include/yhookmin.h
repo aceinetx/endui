@@ -55,9 +55,9 @@ int yHookDisable(yHook_t hook);
 #include <unistd.h>
 int yHookProtect(void *address, size_t size, int prot) {
   long page_size;
-  void *aligned_address;
-  void *end;
+  void *aligned_address, *end;
   size_t new_size;
+  int error;
 
   page_size = sysconf(_SC_PAGESIZE);
   aligned_address = (void *)((long)address & ~(page_size - 1));
@@ -65,7 +65,7 @@ int yHookProtect(void *address, size_t size, int prot) {
   end = address + size;
   new_size = end - aligned_address;
 
-  int error = mprotect(aligned_address, new_size, prot);
+  error = mprotect(aligned_address, new_size, prot);
   return error;
 }
 #define yHookWriteMemory(addr, buffer, size)                                   \
@@ -84,10 +84,10 @@ yHook_t yHookInstall(yaddr_t from, yaddr_t to) {
   hook.from = from;
   hook.to = to;
 
-  // save old code
+  /* save old code */
   memcpy(hook.originalCode, from, JMP_SIZE);
 
-  // generate jmp opcode
+  /* generate jmp opcode */
 #ifdef YHOOK_X64
   memcpy(hook.hookCode, "\x48\xB8", 2);
   memcpy(hook.hookCode + 2, &hook.to, sizeof(yaddr_t));
@@ -111,7 +111,7 @@ yHook_t yHookInstall(yaddr_t from, yaddr_t to) {
 
 int yHookEnable(yHook_t hook) {
 #ifndef _WIN32
-  // unprotect the region
+  /* unprotect the region */
   if (yHookProtect(hook.from, JMP_SIZE, PROT_WRITE | PROT_READ | PROT_EXEC) ==
       -1) {
     return -1;
@@ -129,7 +129,7 @@ int yHookEnable(yHook_t hook) {
 
 int yHookDisable(yHook_t hook) {
 #ifndef _WIN32
-  // unprotect the region
+  /* unprotect the region */
   if (yHookProtect(hook.from, JMP_SIZE, PROT_WRITE | PROT_READ | PROT_EXEC) ==
       -1) {
     return -1;
@@ -169,9 +169,9 @@ int yHookProtect(void *address, size_t size, int prot) {
 }
 
 __attribute__((naked)) void opcarm() {
-  asm volatile("movw r0, #0x5678\n\t" // Load lower 16 bits of address
-               "movt r0, #0x1234\n\t" // Load upper 16 bits of address
-               "bx   r0\n\t"          // Jump to address in r0
+  asm volatile("movw r0, #0x5678\n\t" /* Load lower 16 bits of address */
+               "movt r0, #0x1234\n\t" /* Load upper 16 bits of address */
+               "bx   r0\n\t"          /* Jump to address in r0 */
   );
 }
 
@@ -180,17 +180,17 @@ void __yHookPatch(uint32_t new_addr) {
 
   yHookProtect(opcarm, 8, PROT_WRITE | PROT_EXEC | PROT_READ);
 
-  // Patch the MOVT instruction (lower 16 bits)
+  /* Patch the MOVT instruction (lower 16 bits) */
   code[4] = new_addr >> 16 & 0xff;
   code[5] = new_addr >> 16 >> 8 & 0xf;
   code[6] = (new_addr >> 16 >> 12 & 0xf) + 0x40;
 
-  // Patch the MOVW instruction (upper 16 bits)
+  /* Patch the MOVW instruction (upper 16 bits) */
   code[0] = new_addr & 0xff;
   code[1] = new_addr >> 8 & 0xf;
   code[2] = new_addr >> 12 & 0xf;
 
-  // Ensure cache coherence
+  /* Ensure cache coherence */
   __builtin___clear_cache(code, code + 8);
 }
 

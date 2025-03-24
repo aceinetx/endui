@@ -2,8 +2,8 @@
 #define MOUSE_H
 
 typedef struct {
-  int x;
-  int y;
+  unsigned int x;
+  unsigned int y;
 } endui_mouse;
 
 #endif

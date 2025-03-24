@@ -9,4 +9,4 @@ typedef struct {
   char *_dlerror;
 } app_exec_result;
 
-#endif // APP_EXEC_RESULT
+#endif /* APP_EXEC_RESULT */

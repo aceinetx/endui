@@ -7,4 +7,4 @@ int settings_main(void);
 
 extern EWH *settingsWindow;
 
-#endif // SETTINGS_H
+#endif /* SETTINGS_H */

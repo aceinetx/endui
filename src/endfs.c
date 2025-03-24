@@ -2,22 +2,27 @@
 #include <stdlib.h>
 
 char *read_file(const char *filename) {
-  FILE *file = fopen(filename, "rb");
+  FILE *file;
+  char *buffer;
+  size_t bytesRead;
+  size_t filesize;
+
+  file = fopen(filename, "rb");
   if (!file) {
     return NULL;
   }
 
   fseek(file, 0, SEEK_END);
-  long filesize = ftell(file);
+  filesize = ftell(file);
   fseek(file, 0, SEEK_SET);
 
-  char *buffer = (char *)malloc(filesize + 1);
+  buffer = (char *)malloc(filesize + 1);
   if (!buffer) {
     fclose(file);
     return NULL;
   }
 
-  size_t bytesRead = fread(buffer, 1, filesize, file);
+  bytesRead = fread(buffer, 1, filesize, file);
   if (bytesRead != filesize) {
     free(buffer);
     fclose(file);

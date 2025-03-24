@@ -20,6 +20,8 @@ bool endbar_toggle_settings(struct EWH *sender, void *arg) {
 }
 
 void endbar_main() {
+  EWH *virtual_desktop_label, *settings_button;
+
   bar = ewh_new_window(0, getmaxy(stdscr) - 1, getmaxx(stdscr), 1, "EndUI");
   bar->flags = EWH_NORESIZE | EWH_NOTITLE;
   ewh_add(bar);
@@ -28,14 +30,14 @@ void endbar_main() {
   main_button->ewh_callback = endbar_toggle_menu;
   ewh_add(main_button);
 
-  EWH *virtual_desktop_label = ewh_new_label(11, 0, "", bar);
+  virtual_desktop_label = ewh_new_label(11, 0, "", bar);
   main_menu = ewh_new_window(0, 0, 15, 10, "Main");
   main_menu->y = getmaxy(stdscr) - main_menu->height - 1;
   main_menu->flags = EWH_NORESIZE | EWH_NOTITLE;
   main_menu->hidden = true;
   ewh_add(main_menu);
 
-  EWH *settings_button = ewh_new_button(1, 1, 11, 3, "Settings", main_menu);
+  settings_button = ewh_new_button(1, 1, 11, 3, "Settings", main_menu);
   settings_button->ewh_callback = endbar_toggle_settings;
 
   ewh_add(settings_button);

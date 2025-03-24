@@ -17,7 +17,7 @@ typedef struct ezheap_t {
 extern ezheap_t __ezheap_instance;
 #endif
 
-// we need to increment allocs & frees to make it match with valgrind
+/* we need to increment allocs & frees to make it match with valgrind */
 #ifdef EZHEAP_DBG
 #define ezheap_init()                                                          \
   memset(&__ezheap_instance, 0, sizeof(__ezheap_instance));                    \
