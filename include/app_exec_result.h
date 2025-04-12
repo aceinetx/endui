@@ -4,9 +4,9 @@
 #include <stdbool.h>
 
 typedef struct {
-  bool success;
-  void *handle;
-  char *_dlerror;
+	bool success;
+	void* handle;
+	char* _dlerror;
 } app_exec_result;
 
 #endif /* APP_EXEC_RESULT */

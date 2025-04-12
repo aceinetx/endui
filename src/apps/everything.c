@@ -5,8 +5,10 @@
 bool active = true;
 
 void main() {
-  settings_main();
-  endbar_main();
+	settings_main();
+	endbar_main();
 }
 
-void endui_fini() { active = false; }
+void endui_fini() {
+	active = false;
+}

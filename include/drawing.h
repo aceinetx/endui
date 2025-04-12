@@ -6,6 +6,6 @@
 #include <window.h>
 
 void empty_screen();
-void draw_windows(vec_void_t *handles, EWH *drag_window, endui_mouse *mouse);
+void draw_windows(vec_void_t* handles, EWH* drag_window, endui_mouse* mouse);
 
 #endif
