@@ -8,7 +8,8 @@ set(CMAKE_C_STANDARD_REQUIRED YES)
 include_directories("include" "include/ezheap" "include/apps")
 link_directories("lib/x86" "lib/armv7")
 
-add_compile_options("-Wall" "-Wextra" "-Wno-unused-parameter" "-Wno-unused-value" "-Wno-pointer-arith" "-Wno-variadic-macros" "-Wno-main" "-Wno-sign-compare")
+add_compile_options("-Wall" "-Wextra" "-Wno-unused-parameter" "-Wno-unused-value" "-Wno-pointer-arith" "-Wno-variadic-macros" "-Wno-main" "-Wno-sign-compare" "-fsanitize=address")
+add_link_options("-fsanitize=address")
 
 find_package(Curses)
 if(NOT Curses_FOUND)
@@ -26,7 +27,7 @@ else()
 endif()
 
 # compile endui
-set(SOURCES "src/endui.c" "src/ezheap/ezheap.c" "src/segcatch.c")
+set(SOURCES "src/endui.c" "src/segcatch.c")
 set(LIB_SOURCES "src/endlib.c" "src/window.c" "src/vec.c" "src/drawing.c" "src/keyboard.c" "src/ezheap/ezheap.c" "src/endfs.c" "src/virtual_desktop.c")
 
 add_library("endlib" SHARED ${LIB_SOURCES})

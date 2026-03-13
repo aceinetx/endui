@@ -9,7 +9,7 @@
 #include <yhookmin.h>
 
 typedef struct {
-	int menu_toggle_key;
+	char menu_toggle_key;
 } settings_t;
 
 settings_t settings;
